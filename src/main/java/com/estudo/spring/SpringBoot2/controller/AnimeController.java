@@ -1,6 +1,7 @@
 package com.estudo.spring.SpringBoot2.controller;
 
 import com.estudo.spring.SpringBoot2.requests.AnimePostRequestBody;
+import com.estudo.spring.SpringBoot2.requests.AnimePutRequestBody;
 import com.estudo.spring.SpringBoot2.service.AnimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.estudo.spring.SpringBoot2.domain.Anime;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 
@@ -18,7 +18,8 @@ import java.util.List;
 @Log4j2
 @RequiredArgsConstructor
 public class AnimeController {
-    final AnimeService animeService = new AnimeService();
+
+    final AnimeService animeService;
 
     @GetMapping
     public ResponseEntity<List<Anime>> list(){
@@ -27,7 +28,7 @@ public class AnimeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id){
-        return ResponseEntity.ok(animeService.findById(id));
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadException(id));
     }
 
     @PostMapping
@@ -42,7 +43,7 @@ public class AnimeController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime anime){
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody anime){
         animeService.replace(anime);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
