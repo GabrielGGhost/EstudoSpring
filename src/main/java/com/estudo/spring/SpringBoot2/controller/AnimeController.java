@@ -1,5 +1,6 @@
 package com.estudo.spring.SpringBoot2.controller;
 
+import com.estudo.spring.SpringBoot2.requests.AnimePostRequestBody;
 import com.estudo.spring.SpringBoot2.service.AnimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,7 +31,7 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime){
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime){
         return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
     }
 

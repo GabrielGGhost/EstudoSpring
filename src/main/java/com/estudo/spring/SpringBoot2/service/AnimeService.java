@@ -2,6 +2,7 @@ package com.estudo.spring.SpringBoot2.service;
 
 import com.estudo.spring.SpringBoot2.domain.Anime;
 import com.estudo.spring.SpringBoot2.repository.AnimeRepository;
+import com.estudo.spring.SpringBoot2.requests.AnimePostRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
@@ -27,18 +28,16 @@ public class AnimeService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not found"));
     }
 
-    public Anime save(Anime anime) {
-        anime.setId(ThreadLocalRandom.current().nextLong(3, 10000));
-        animes.add(anime);
-        return anime;
+    public Anime save(AnimePostRequestBody anime) {
+        return animeRepository.save(Anime.builder().name(anime.getName()).build());
     }
 
     public void delete(long id) {
-        animes.remove(findById(id));
+        animeRepository.delete(findById(id));
     }
 
     public void replace(Anime anime) {
+        animeRepository.save(anime);
         delete(anime.getId());
-        animes.add(anime);
     }
 }
